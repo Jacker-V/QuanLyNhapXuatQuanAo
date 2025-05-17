@@ -84,8 +84,10 @@ public class NhapFrame extends javax.swing.JFrame {
         jTextFieldNgaySanXuat = new javax.swing.JTextField();
         jTextFieldGiaBan = new javax.swing.JTextField();
         jTextFieldXuatXu = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButtonInsert = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
+        jButtonUpdate = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -149,10 +151,10 @@ public class NhapFrame extends javax.swing.JFrame {
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, 90));
 
         jPanel2.setBackground(new java.awt.Color(0, 204, 204));
 
@@ -215,59 +217,59 @@ public class NhapFrame extends javax.swing.JFrame {
                 jTextFieldSoLuongActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldSoLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 220, 30));
+        jPanel3.add(jTextFieldSoLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 250, 30));
 
         jTextFieldMaHangHoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldMaHangHoaActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldMaHangHoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 220, 30));
+        jPanel3.add(jTextFieldMaHangHoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 250, 30));
 
         jTextFieldTenHangHoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldTenHangHoaActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldTenHangHoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 220, 30));
+        jPanel3.add(jTextFieldTenHangHoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 250, 30));
 
         jTextFieldLoaiHangHoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldLoaiHangHoaActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldLoaiHangHoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 220, 30));
+        jPanel3.add(jTextFieldLoaiHangHoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 250, 30));
 
         jTextFieldNgaySanXuat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNgaySanXuatActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldNgaySanXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 230, 220, 30));
+        jPanel3.add(jTextFieldNgaySanXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 230, 250, 30));
 
         jTextFieldGiaBan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldGiaBanActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldGiaBan, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 220, 30));
+        jPanel3.add(jTextFieldGiaBan, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 250, 30));
 
         jTextFieldXuatXu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldXuatXuActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldXuatXu, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 220, 30));
+        jPanel3.add(jTextFieldXuatXu, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 250, 30));
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 153, 153));
-        jButton1.setText("Nhập hàng");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonInsert.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonInsert.setForeground(new java.awt.Color(0, 153, 153));
+        jButtonInsert.setText("Nhập hàng");
+        jButtonInsert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonInsertActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 370, -1, -1));
+        jPanel3.add(jButtonInsert, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 410, 140, -1));
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 153, 153));
@@ -277,9 +279,29 @@ public class NhapFrame extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 370, -1, -1));
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 410, 130, -1));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 430, 410));
+        jButtonDelete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonDelete.setForeground(new java.awt.Color(0, 153, 153));
+        jButtonDelete.setText("Xóa");
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 370, 130, -1));
+
+        jButtonUpdate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonUpdate.setForeground(new java.awt.Color(0, 153, 153));
+        jButtonUpdate.setText("Cập nhật");
+        jButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUpdateActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 370, 140, -1));
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 430, 450));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -307,7 +329,7 @@ public class NhapFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, 600, 410));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 100, 600, 450));
 
         pack();
         setLocationRelativeTo(null);
@@ -341,7 +363,7 @@ public class NhapFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldXuatXuActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
         // TODO add your handling code here:
         int MaHangHoa = Integer.parseInt(jTextFieldMaHangHoa.getText());
         String TenHangHoa = jTextFieldTenHangHoa.getText();
@@ -356,7 +378,7 @@ public class NhapFrame extends javax.swing.JFrame {
         NhapBal nhapObj = new NhapBal();
         nhapObj.insert(nhapBean);
         loadTable();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
         // TODO add your handling code here:
@@ -391,6 +413,39 @@ public class NhapFrame extends javax.swing.JFrame {
             jTextFieldSoLuong.setText(""+bean.getSoLuong());
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        // TODO add your handling code here:
+        int MaHangHoa = Integer.parseInt(jTextFieldMaHangHoa.getText());
+        String TenHangHoa = jTextFieldTenHangHoa.getText();
+        String LoaiHangHoa = jTextFieldLoaiHangHoa.getText();
+        String XuatXu = jTextFieldXuatXu.getText();
+        String NgaySanXuat = jTextFieldNgaySanXuat.getText();
+        float GiaBan = Float.parseFloat(jTextFieldGiaBan.getText());
+        int SoLuong = Integer.parseInt(jTextFieldSoLuong.getText());
+        NhapBean bean = new NhapBean(MaHangHoa, TenHangHoa, LoaiHangHoa, XuatXu, NgaySanXuat, GiaBan, SoLuong);
+
+        NhapBal bal = new NhapBal();
+        bal.deleteData(bean);
+        loadTable();
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
+        // TODO add your handling code here:
+        int MaHangHoa = Integer.parseInt(jTextFieldMaHangHoa.getText());
+        String TenHangHoa = jTextFieldTenHangHoa.getText();
+        String LoaiHangHoa = jTextFieldLoaiHangHoa.getText();
+        String XuatXu = jTextFieldXuatXu.getText();
+        String NgaySanXuat = jTextFieldNgaySanXuat.getText();
+        float GiaBan = Float.parseFloat(jTextFieldGiaBan.getText());
+        int SoLuong = Integer.parseInt(jTextFieldSoLuong.getText());
+        
+        NhapBean bean = new NhapBean(MaHangHoa, TenHangHoa, LoaiHangHoa, XuatXu, NgaySanXuat, GiaBan, SoLuong);
+        NhapBal bal = new NhapBal();
+        bal.updateData(bean);
+        loadTable();
+        
+    }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -428,9 +483,11 @@ public class NhapFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonDelete;
+    private javax.swing.JButton jButtonInsert;
+    private javax.swing.JButton jButtonUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

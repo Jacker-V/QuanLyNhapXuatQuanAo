@@ -94,4 +94,44 @@ public class NhapBal {
         }
         return bean;
     }
+    
+    
+    //Update
+    public void updateData(NhapBean nhapBean){
+        try {
+            String query = "update hanghoa set TenHangHoa = ?, LoaiHangHoa = ?, XuatXu = ?, NgaySanXuat = ?,GiaBan = ?, SoLuong =? WHERE MaHangHoa = ?";
+            PreparedStatement ps = DB.con.prepareStatement(query);
+            ps.setInt(7, nhapBean.getMaHangHoa());
+            ps.setString(1, nhapBean.getTenHangHoa());
+            ps.setString(2, nhapBean.getLoaiHangHoa());
+            ps.setString(3, nhapBean.getXuatXu());
+            ps.setString(4, nhapBean.getNgaySanXuat());
+            ps.setFloat(5, nhapBean.getGiaBan());
+            ps.setInt(6, nhapBean.getSoLuong());
+            
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Đã cập nhật lại thành công");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, ""+e);
+        }
+    }
+    
+    public void deleteData(NhapBean nhapBean){
+        try {
+            String query = "delete from hanghoa WHERE MaHangHoa = ?";
+            PreparedStatement ps = DB.con.prepareStatement(query);
+            ps.setInt(1, nhapBean.getMaHangHoa());
+            
+            
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Đã xóa đơn hàng thành công");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, ""+e);
+        }
+    }
+    
+    
+    
+    
+    
 }
