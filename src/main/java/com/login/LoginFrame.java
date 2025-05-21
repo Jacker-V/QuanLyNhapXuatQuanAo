@@ -4,6 +4,7 @@
  */
 package com.login;
 import com.home.HomeFrame;
+import com.home.HomeFrameAdmin;
 /**
  *
  * @author Jacker
@@ -199,16 +200,24 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        String email = jTextField1.getText();
+        String FullName = jTextField1.getText();
         String password = jTextField3.getText();
         
         Bal balObj = new Bal();
-        boolean b = balObj.checkLogin(email, password);
-        if(b){
-            HomeFrame home = new HomeFrame();
+        boolean b = balObj.checkLogin(FullName, password);
+        
+//        String tenNguoiDung = jTextField1.getText();
+        if(FullName.equals("admin") && password.equals("123")){
+            HomeFrameAdmin home = new HomeFrameAdmin();
             home.setVisible(true);
             this.dispose();
+        }else if (b){
+            HomeFrame hom = new HomeFrame();
+            hom.setVisible(true);
+            this.dispose();
         }
+//        System.out.println(email);
+        System.out.println(password);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -245,7 +254,7 @@ public class LoginFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

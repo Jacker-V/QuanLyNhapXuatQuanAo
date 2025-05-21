@@ -20,20 +20,21 @@ public class XuatBal {
     public List<XuatBean> loadData(){
         List<XuatBean> list = new ArrayList<XuatBean>();
         try {
-            String query = "select * from hanghoa";
+            String query = "select * from sanpham";
             PreparedStatement ps = DB.con.prepareStatement(query);
             
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                int MaHangHoa = rs.getInt("MaHangHoa");
-                String TenHangHoa = rs.getString("TenHangHoa");
-                String LoaiHangHoa = rs.getString("LoaiHangHoa");
-                String XuatXu = rs.getString("XuatXu");
-                String NgaySanXuat = rs.getString("NgaySanXuat");
-                float GiaBan = rs.getFloat("GiaBan");
+                int idsanpham = rs.getInt("idsanpham");
+                String TenSanPham = rs.getString("TenSanPham");
+                String NhaCungCap = rs.getString("NhaCungCap");
+                float GiaNhap = rs.getFloat("GiaNhap");
+                String NgayNhap = rs.getString("NgayNhap");
+                String Size = rs.getString("Size");
+                String Mau = rs.getString("Mau");
                 int SoLuong = rs.getInt("SoLuong");
                 
-                XuatBean bean = new XuatBean(MaHangHoa, TenHangHoa, LoaiHangHoa, XuatXu, NgaySanXuat, GiaBan, SoLuong);
+                XuatBean bean = new XuatBean(idsanpham,TenSanPham, NhaCungCap, GiaNhap, NgayNhap, Size, Mau, SoLuong);
                 list.add(bean);
                 
             }
@@ -49,19 +50,20 @@ public class XuatBal {
     public XuatBean returnAllDataToTextFields(int id){
         XuatBean bean = null;
         try {
-            String query = "select * from hanghoa where MaHangHoa = "+id;
+            String query = "select * from sanpham where idsanpham = "+id;
             PreparedStatement ps = DB.con.prepareStatement(query);
             ResultSet rs = ps.executeQuery(query);
             while (rs.next()){
-                int MaHangHoa = rs.getInt("MaHangHoa");
-                String TenHangHoa = rs.getString("TenHangHoa");
-                String LoaiHangHoa = rs.getString("LoaiHangHoa");
-                String XuatXu = rs.getString("XuatXu");
-                String NgaySanXuat = rs.getString("NgaySanXuat");
-                float GiaBan = rs.getFloat("GiaBan");
+                int idsanpham = rs.getInt("idsanpham");
+                String TenSanPham = rs.getString("TenSanPham");
+                String NhaCungCap = rs.getString("NhaCungCap");
+                float GiaNhap = rs.getFloat("GiaNhap");
+                String NgayNhap = rs.getString("NgayNhap");
+                String Size = rs.getString("Size");
+                String Mau = rs.getString("Mau");
                 int SoLuong = rs.getInt("SoLuong");
                 
-                bean = new XuatBean(MaHangHoa, TenHangHoa, LoaiHangHoa, XuatXu, NgaySanXuat, GiaBan, SoLuong);
+                bean = new XuatBean(idsanpham, TenSanPham, NgayNhap, GiaNhap, NgayNhap, Size, Mau, SoLuong);
                 
             }
         } catch (Exception e) {
@@ -72,15 +74,31 @@ public class XuatBal {
     
     public void updateData(XuatBean bean){
         try {
-            String query = "Update hanghoa Set SoLuong = SoLuong - ? where MaHangHoa = ?";
+            String query = "Update sanpham Set SoLuong = SoLuong - ? where idsanpham = ?";
             PreparedStatement ps = DB.con.prepareStatement(query);
-            ps.setInt(2, bean.getMaHangHoa());
+            ps.setInt(2, bean.getIdsanpham());
             ps.setInt(1, bean.getSoLuong());
              
             ps.executeUpdate();
+            
+            
+            // Chèn dữ liệu vào bảng đơn hàng
+            String insert_query = "insert into donhang values (null,?,?,?,?,?,?,?)";
+            PreparedStatement ps2 = DB.con.prepareStatement(insert_query);
+            ps2.setString(1, bean.getTenSanPham());
+            ps2.setString(2, bean.getNhaCungCap());
+            ps2.setFloat(3, bean.getGiaNhap());
+            ps2.setString(4, bean.getNgayNhap());
+            ps2.setString(5, bean.getSize());
+            ps2.setString(6, bean.getMau());
+            ps2.setInt(7, bean.getSoLuong());
+            
+            ps2.executeUpdate();
             JOptionPane.showMessageDialog(null, "Xuất thành công");
+            System.out.println("1");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,""+bean);
+            System.out.println("2");
         }
     }
 }

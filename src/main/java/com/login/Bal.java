@@ -59,13 +59,16 @@ public class Bal {
         return b;
     }
     
-    public boolean checkLogin(String email, String pass){
+    public boolean checkLogin(String FullName, String pass){
         boolean b = false;
         try {
-            String query = "select Email, Password from user where Email = '"+email+"'AND Password= '"+pass+"'";
+            
+            
+            String query = "select FullName, Password from user where FullName = '"+FullName+"'AND Password= '"+pass+"'";
             Statement st = DB.con.createStatement();
             ResultSet rs = st.executeQuery(query);
             if (rs.next()) {
+                
                 b= true;
             }else{
                 JOptionPane.showMessageDialog(null,"Đăng nhập không thành công");

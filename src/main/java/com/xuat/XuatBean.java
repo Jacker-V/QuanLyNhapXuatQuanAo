@@ -9,76 +9,91 @@ package com.xuat;
  * @author Jacker
  */
 public class XuatBean {
-    private int MaHangHoa;
-    private String TenHangHoa;
-    private String LoaiHangHoa;
-    private String XuatXu;
-    private String NgaySanXuat;
-    private float GiaBan;
+    private int idsanpham;
+    private String TenSanPham;
+    private String NhaCungCap;
+    private float GiaNhap;
+    private String NgayNhap;
+    private String Size;
+    private String Mau;
     private int SoLuong;
-    
-    public XuatBean(int MaHangHoa, String TenHangHoa, String LoaiHangHoa, String XuatXu, String NgaySanXuat, float GiaBan, int SoLuong) {
-        this.MaHangHoa = MaHangHoa;
-        this.TenHangHoa = TenHangHoa;
-        this.LoaiHangHoa = LoaiHangHoa;
-        this.XuatXu = XuatXu;
-        this.NgaySanXuat = NgaySanXuat;
-        this.GiaBan = GiaBan;
+
+    public XuatBean(int idsanpham, String TenSanPham, String NhaCungCap, float GiaNhap, String NgayNhap, String Size, String Mau, int SoLuong) {
+        this.idsanpham = idsanpham;
+        this.TenSanPham = TenSanPham;
+        this.NhaCungCap = NhaCungCap;
+        this.GiaNhap = GiaNhap;
+        this.NgayNhap = NgayNhap;
+        this.Size = Size;
+        this.Mau = Mau;
         this.SoLuong = SoLuong;
     }
-    public int getMaHangHoa() {
-        return MaHangHoa;
+
+    public int getIdsanpham() {
+        return idsanpham;
     }
 
-    public void setMaHangHoa(int MaHangHoa) {
-        this.MaHangHoa = MaHangHoa;
+    public void setIdsanpham(int idsanpham) {
+        this.idsanpham = idsanpham;
     }
 
-    public String getTenHangHoa() {
-        return TenHangHoa;
+    public String getTenSanPham() {
+        return TenSanPham;
     }
 
-    public void setTenHangHoa(String tenHangHoa) {
-        this.TenHangHoa = tenHangHoa;
+    public void setTenSanPham(String TenSanPham) {
+        this.TenSanPham = TenSanPham;
     }
 
-    public String getLoaiHangHoa() {
-        return LoaiHangHoa;
+    public String getNhaCungCap() {
+        return NhaCungCap;
     }
 
-    public void setLoaiHangHoa(String loaiHangHoa) {
-        this.LoaiHangHoa = loaiHangHoa;
+    public void setNhaCungCap(String NhaCungCap) {
+        this.NhaCungCap = NhaCungCap;
     }
 
-    public String getXuatXu() {
-        return XuatXu;
+    public float getGiaNhap() {
+        return GiaNhap;
     }
 
-    public void setXuatXu(String xuatXu) {
-        this.XuatXu = xuatXu;
+    public void setGiaNhap(float GiaNhap) {
+        this.GiaNhap = GiaNhap;
     }
 
-    public String getNgaySanXuat() {
-        return NgaySanXuat;
+    public String getNgayNhap() {
+        return NgayNhap;
     }
 
-    public void setNgaySanXuat(String ngaySanXuat) {
-        this.NgaySanXuat = ngaySanXuat;
+    public void setNgayNhap(String NgayNhap) {
+        this.NgayNhap = NgayNhap;
     }
 
-    public float getGiaBan() {
-        return GiaBan;
+    public String getSize() {
+        return Size;
     }
 
-    public void setGiaBan(float giaBan) {
-        this.GiaBan = giaBan;
+    public void setSize(String Size) {
+        this.Size = Size;
+    }
+
+    public String getMau() {
+        return Mau;
+    }
+
+    public void setMau(String Mau) {
+        this.Mau = Mau;
     }
 
     public int getSoLuong() {
         return SoLuong;
     }
 
-    public void setSoLuong(int soLuong) {
-        this.SoLuong = soLuong;
+    public void setSoLuong(int SoLuong) {
+        this.SoLuong = SoLuong;
     }
+
+    
+    
+    
 }

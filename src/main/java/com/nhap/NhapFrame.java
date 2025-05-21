@@ -4,11 +4,24 @@
  */
 package com.nhap;
 
+import com.database.DB;
 import com.home.HomeFrame;
+import com.home.HomeFrameAdmin;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.awt.Desktop;
+
+import java.io.IOException;
 
 /**
  *
@@ -31,12 +44,13 @@ public class NhapFrame extends javax.swing.JFrame {
         
         for(NhapBean bean : list) {
             Vector v = new Vector();
-            v.add(bean.getMaHangHoa());
-            v.add(bean.getTenHangHoa());
-            v.add(bean.getLoaiHangHoa());
-            v.add(bean.getXuatXu());
-            v.add(bean.getNgaySanXuat());
-            v.add(bean.getGiaBan());
+            v.add(bean.getIdsanpham());
+            v.add(bean.getTenSanPham());
+            v.add(bean.getNhaCungCap());
+            v.add(bean.getGiaNhap());
+            v.add(bean.getNgayNhap());
+            v.add(bean.getSize());
+            v.add(bean.getMau());
             v.add(bean.getSoLuong());
             
             dtm.addRow(v);
@@ -78,12 +92,12 @@ public class NhapFrame extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jTextFieldSoLuong = new javax.swing.JTextField();
-        jTextFieldMaHangHoa = new javax.swing.JTextField();
-        jTextFieldTenHangHoa = new javax.swing.JTextField();
-        jTextFieldLoaiHangHoa = new javax.swing.JTextField();
-        jTextFieldNgaySanXuat = new javax.swing.JTextField();
-        jTextFieldGiaBan = new javax.swing.JTextField();
-        jTextFieldXuatXu = new javax.swing.JTextField();
+        jTextFieldTenSanPham = new javax.swing.JTextField();
+        jTextFieldNhaCungCap = new javax.swing.JTextField();
+        jTextFieldGiaNhap = new javax.swing.JTextField();
+        jTextFieldSize = new javax.swing.JTextField();
+        jTextFieldMau = new javax.swing.JTextField();
+        jTextFieldNgayNhap = new javax.swing.JTextField();
         jButtonInsert = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
@@ -179,27 +193,27 @@ public class NhapFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel2.setText("Tên hàng hóa");
+        jLabel2.setText("Nhà cung cấp");
         jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 130, 30));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel3.setText("Loại hàng hóa");
+        jLabel3.setText("Giá nhập");
         jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 130, 30));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel4.setText("Xuất xứ");
+        jLabel4.setText("Ngày nhập");
         jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 130, 30));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel5.setText("Ngày sản xuất");
+        jLabel5.setText("Size");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 140, 30));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel6.setText("Giá bán");
+        jLabel6.setText("Màu");
         jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 130, 30));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -209,7 +223,7 @@ public class NhapFrame extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel8.setText("Mã hàng hóa");
+        jLabel8.setText("Tên sản phẩm");
         jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 130, 30));
 
         jTextFieldSoLuong.addActionListener(new java.awt.event.ActionListener() {
@@ -217,49 +231,49 @@ public class NhapFrame extends javax.swing.JFrame {
                 jTextFieldSoLuongActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldSoLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 250, 30));
+        jPanel3.add(jTextFieldSoLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 220, 30));
 
-        jTextFieldMaHangHoa.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldTenSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldMaHangHoaActionPerformed(evt);
+                jTextFieldTenSanPhamActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldMaHangHoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 250, 30));
+        jPanel3.add(jTextFieldTenSanPham, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 220, 30));
 
-        jTextFieldTenHangHoa.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldTenHangHoaActionPerformed(evt);
+                jTextFieldNhaCungCapActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldTenHangHoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 250, 30));
+        jPanel3.add(jTextFieldNhaCungCap, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 220, 30));
 
-        jTextFieldLoaiHangHoa.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldGiaNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldLoaiHangHoaActionPerformed(evt);
+                jTextFieldGiaNhapActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldLoaiHangHoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 250, 30));
+        jPanel3.add(jTextFieldGiaNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 220, 30));
 
-        jTextFieldNgaySanXuat.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldSize.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldNgaySanXuatActionPerformed(evt);
+                jTextFieldSizeActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldNgaySanXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 230, 250, 30));
+        jPanel3.add(jTextFieldSize, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 230, 220, 30));
 
-        jTextFieldGiaBan.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldMau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldGiaBanActionPerformed(evt);
+                jTextFieldMauActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldGiaBan, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 250, 30));
+        jPanel3.add(jTextFieldMau, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 220, 30));
 
-        jTextFieldXuatXu.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldNgayNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldXuatXuActionPerformed(evt);
+                jTextFieldNgayNhapActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextFieldXuatXu, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 250, 30));
+        jPanel3.add(jTextFieldNgayNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 220, 30));
 
         jButtonInsert.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButtonInsert.setForeground(new java.awt.Color(0, 153, 153));
@@ -269,7 +283,7 @@ public class NhapFrame extends javax.swing.JFrame {
                 jButtonInsertActionPerformed(evt);
             }
         });
-        jPanel3.add(jButtonInsert, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 410, 140, -1));
+        jPanel3.add(jButtonInsert, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 410, 140, -1));
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 153, 153));
@@ -279,7 +293,7 @@ public class NhapFrame extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 410, 130, -1));
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 410, 130, -1));
 
         jButtonDelete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButtonDelete.setForeground(new java.awt.Color(0, 153, 153));
@@ -289,7 +303,7 @@ public class NhapFrame extends javax.swing.JFrame {
                 jButtonDeleteActionPerformed(evt);
             }
         });
-        jPanel3.add(jButtonDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 370, 130, -1));
+        jPanel3.add(jButtonDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 370, 130, -1));
 
         jButtonUpdate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButtonUpdate.setForeground(new java.awt.Color(0, 153, 153));
@@ -299,23 +313,23 @@ public class NhapFrame extends javax.swing.JFrame {
                 jButtonUpdateActionPerformed(evt);
             }
         });
-        jPanel3.add(jButtonUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 370, 140, -1));
+        jPanel3.add(jButtonUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 370, 140, -1));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 430, 450));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 400, 450));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã hàng hóa", "Tên hàng hóa", "Loại hàng hóa", "Xuất xứ", "Ngày sản xuất", "Giá bán", "Số lượng"
+                "Mã sản phẩm", "Tên sản phẩm", "Nhà cung cấp", "Giá nhập", "Ngày nhập", "Size", "Màu", "Số lượng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, true
+                false, false, false, true, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -329,7 +343,7 @@ public class NhapFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 100, 600, 450));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 100, 640, 450));
 
         pack();
         setLocationRelativeTo(null);
@@ -339,45 +353,101 @@ public class NhapFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldSoLuongActionPerformed
 
-    private void jTextFieldMaHangHoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMaHangHoaActionPerformed
+    private void jTextFieldTenSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTenSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldMaHangHoaActionPerformed
+    }//GEN-LAST:event_jTextFieldTenSanPhamActionPerformed
 
-    private void jTextFieldTenHangHoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTenHangHoaActionPerformed
+    private void jTextFieldNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNhaCungCapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldTenHangHoaActionPerformed
+    }//GEN-LAST:event_jTextFieldNhaCungCapActionPerformed
 
-    private void jTextFieldLoaiHangHoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldLoaiHangHoaActionPerformed
+    private void jTextFieldGiaNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldGiaNhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldLoaiHangHoaActionPerformed
+    }//GEN-LAST:event_jTextFieldGiaNhapActionPerformed
 
-    private void jTextFieldNgaySanXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNgaySanXuatActionPerformed
+    private void jTextFieldSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSizeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNgaySanXuatActionPerformed
+    }//GEN-LAST:event_jTextFieldSizeActionPerformed
 
-    private void jTextFieldGiaBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldGiaBanActionPerformed
+    private void jTextFieldMauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMauActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldGiaBanActionPerformed
+    }//GEN-LAST:event_jTextFieldMauActionPerformed
 
-    private void jTextFieldXuatXuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldXuatXuActionPerformed
+    private void jTextFieldNgayNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNgayNhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldXuatXuActionPerformed
+    }//GEN-LAST:event_jTextFieldNgayNhapActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
         // TODO add your handling code here:
-        int MaHangHoa = Integer.parseInt(jTextFieldMaHangHoa.getText());
-        String TenHangHoa = jTextFieldTenHangHoa.getText();
-        String LoaiHangHoa = jTextFieldLoaiHangHoa.getText();
-        String XuatXu = jTextFieldXuatXu.getText();
-        String NgaySanXuat = jTextFieldXuatXu.getText();
-        float GiaBan = Float.parseFloat(jTextFieldGiaBan.getText());
-        int SoLuong = Integer.parseInt(jTextFieldSoLuong.getText());
         
-        NhapBean nhapBean = new NhapBean(MaHangHoa,TenHangHoa,LoaiHangHoa,XuatXu,NgaySanXuat,GiaBan,SoLuong);
-        
-        NhapBal nhapObj = new NhapBal();
-        nhapObj.insert(nhapBean);
-        loadTable();
+        try {
+            String TenSanPham = jTextFieldTenSanPham.getText().trim();
+            String NhaCungCap = jTextFieldNhaCungCap.getText().trim();
+            String GiaNhapStr = jTextFieldGiaNhap.getText().trim();
+            String NgayNhap = jTextFieldNgayNhap.getText().trim();
+            String Size = jTextFieldSize.getText().trim();
+            String Mau = jTextFieldMau.getText().trim();
+            String SoLuongStr = jTextFieldSoLuong.getText().trim();
+
+            // Kiểm tra rỗng
+            if (TenSanPham.isEmpty() || NhaCungCap.isEmpty() || GiaNhapStr.isEmpty() || NgayNhap.isEmpty()
+                    || Size.isEmpty() || Mau.isEmpty() || SoLuongStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ tất cả các trường.", "Thiếu thông tin", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra trường phải là chữ (cho phép khoảng trắng, không số)
+            if (!TenSanPham.matches("[\\p{L} ]+")) {
+                JOptionPane.showMessageDialog(this, "Tên sản phẩm chỉ được chứa chữ cái.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!NhaCungCap.matches("[\\p{L} ]+")) {
+                JOptionPane.showMessageDialog(this, "Nhà cung cấp chỉ được chứa chữ cái.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!Mau.matches("[\\p{L} ]+")) {
+                JOptionPane.showMessageDialog(this, "Màu chỉ được chứa chữ cái.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!Size.matches("[\\p{L}0-9]+")) { // Nếu Size là chữ + số như "XL", "42", giữ nguyên regex này
+                JOptionPane.showMessageDialog(this, "Size chỉ được chứa chữ cái và/hoặc số, không có ký tự đặc biệt.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra định dạng số
+            float GiaNhap;
+            int SoLuong;
+            try {
+                GiaNhap = Float.parseFloat(GiaNhapStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Giá nhập phải là một số hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                SoLuong = Integer.parseInt(SoLuongStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra định dạng ngày
+            if (!NgayNhap.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                JOptionPane.showMessageDialog(this, "Ngày nhập phải có định dạng yyyy-MM-dd (VD: 2025-05-21).", "Lỗi định dạng ngày", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Tạo Bean và insert nếu mọi thứ hợp lệ
+            NhapBean nhapBean = new NhapBean(0, TenSanPham, NhaCungCap, GiaNhap, NgayNhap, Size, Mau, SoLuong);
+            NhapBal nhapObj = new NhapBal();
+            nhapObj.insert(nhapBean);
+            loadTable();
+            JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!");
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
@@ -386,14 +456,77 @@ public class NhapFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
         new HomeFrame().setVisible(true);
-        this.dispose(); 
+        this.dispose();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        String maHangHoa = jTextField8.getText().trim();
+    if (maHangHoa.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Vui lòng nhập mã hàng hóa");
+        return;
+    }
+
+    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "root", "123456")) {
+        String query = "SELECT * FROM hanghoa WHERE MaHangHoa = ?";
+        PreparedStatement pstmt = conn.prepareStatement(query);
+        pstmt.setString(1, maHangHoa);
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            // Tạo tài liệu PDF
+            Document document = new Document();
+            String filePath = "phieu_" + maHangHoa + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+
+            // Tiêu đề
+            Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+            Paragraph title = new Paragraph("PHIẾU HÀNG HÓA\n\n", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            // Nội dung
+            Font contentFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+            document.add(new Paragraph("Mã hàng hóa: " + rs.getInt("MaHangHoa"), contentFont));
+            document.add(new Paragraph("Tên hàng hóa: " + rs.getString("TenHangHoa"), contentFont));
+            document.add(new Paragraph("Loại hàng hóa: " + rs.getString("LoaiHangHoa"), contentFont));
+            document.add(new Paragraph("Xuất xứ: " + rs.getString("XuatXu"), contentFont));
+            document.add(new Paragraph("Ngày sản xuất: " + rs.getString("NgaySanXuat"), contentFont));
+            document.add(new Paragraph("Giá bán: " + rs.getFloat("GiaBan") + " VND", contentFont));
+            document.add(new Paragraph("Số lượng: " + rs.getInt("SoLuong"), contentFont));
+
+            document.close();
+            
+            // Tự động mở phiếu
+            try {
+                File pdfFile = new File(filePath);
+                if (pdfFile.exists() && Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(pdfFile);  // Mở file PDF bằng trình mặc định của hệ điều hành
+                } else {
+                    JOptionPane.showMessageDialog(this, "Không thể mở file PDF tự động.");
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi khi mở file PDF.");
+            }
+
+            JOptionPane.showMessageDialog(this, "Đã tạo phiếu PDF thành công tại: " + filePath);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy hàng hóa với mã: " + maHangHoa);
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Lỗi khi tạo file PDF.");
+    }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    int id=0;
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         int row = jTable1.getSelectedRow();
@@ -401,49 +534,100 @@ public class NhapFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Chọn cột có dữ liệu");
             
         }else{
-            int id = (int) jTable1.getValueAt(row, 0);
+            id = (int) jTable1.getValueAt(row, 0);
             NhapBal bal= new NhapBal();
             NhapBean bean = bal.returnAllDataToTextFields(id);
-            jTextFieldMaHangHoa.setText(""+bean.getMaHangHoa());
-            jTextFieldTenHangHoa.setText(bean.getTenHangHoa());
-            jTextFieldLoaiHangHoa.setText(bean.getLoaiHangHoa());
-            jTextFieldXuatXu.setText(bean.getXuatXu());
-            jTextFieldNgaySanXuat.setText(bean.getNgaySanXuat());
-            jTextFieldGiaBan.setText(""+bean.getGiaBan());
+            jTextFieldTenSanPham.setText(bean.getTenSanPham());
+            jTextFieldNhaCungCap.setText(bean.getNhaCungCap());
+            jTextFieldGiaNhap.setText(""+bean.getGiaNhap());
+            jTextFieldNgayNhap.setText(bean.getNgayNhap());
+            jTextFieldSize.setText(bean.getSize());
+            jTextFieldMau.setText(bean.getMau());
             jTextFieldSoLuong.setText(""+bean.getSoLuong());
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         // TODO add your handling code here:
-        int MaHangHoa = Integer.parseInt(jTextFieldMaHangHoa.getText());
-        String TenHangHoa = jTextFieldTenHangHoa.getText();
-        String LoaiHangHoa = jTextFieldLoaiHangHoa.getText();
-        String XuatXu = jTextFieldXuatXu.getText();
-        String NgaySanXuat = jTextFieldNgaySanXuat.getText();
-        float GiaBan = Float.parseFloat(jTextFieldGiaBan.getText());
-        int SoLuong = Integer.parseInt(jTextFieldSoLuong.getText());
-        NhapBean bean = new NhapBean(MaHangHoa, TenHangHoa, LoaiHangHoa, XuatXu, NgaySanXuat, GiaBan, SoLuong);
+        
 
         NhapBal bal = new NhapBal();
-        bal.deleteData(bean);
+        bal.deleteData(id);
         loadTable();
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
-        int MaHangHoa = Integer.parseInt(jTextFieldMaHangHoa.getText());
-        String TenHangHoa = jTextFieldTenHangHoa.getText();
-        String LoaiHangHoa = jTextFieldLoaiHangHoa.getText();
-        String XuatXu = jTextFieldXuatXu.getText();
-        String NgaySanXuat = jTextFieldNgaySanXuat.getText();
-        float GiaBan = Float.parseFloat(jTextFieldGiaBan.getText());
-        int SoLuong = Integer.parseInt(jTextFieldSoLuong.getText());
-        
-        NhapBean bean = new NhapBean(MaHangHoa, TenHangHoa, LoaiHangHoa, XuatXu, NgaySanXuat, GiaBan, SoLuong);
-        NhapBal bal = new NhapBal();
-        bal.updateData(bean);
-        loadTable();
+        try {
+            String TenSanPham = jTextFieldTenSanPham.getText().trim();
+            String NhaCungCap = jTextFieldNhaCungCap.getText().trim();
+            String GiaNhapStr = jTextFieldGiaNhap.getText().trim();
+            String NgayNhap = jTextFieldNgayNhap.getText().trim();
+            String Size = jTextFieldSize.getText().trim();
+            String Mau = jTextFieldMau.getText().trim();
+            String SoLuongStr = jTextFieldSoLuong.getText().trim();
+
+            // Kiểm tra rỗng
+            if (TenSanPham.isEmpty() || NhaCungCap.isEmpty() || GiaNhapStr.isEmpty()
+                    || NgayNhap.isEmpty() || Size.isEmpty() || Mau.isEmpty() || SoLuongStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ tất cả các trường.", "Thiếu thông tin", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra các trường phải là chữ
+            if (!TenSanPham.matches("[\\p{L} ]+")) {
+                JOptionPane.showMessageDialog(this, "Tên sản phẩm chỉ được chứa chữ cái.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!NhaCungCap.matches("[\\p{L} ]+")) {
+                JOptionPane.showMessageDialog(this, "Nhà cung cấp chỉ được chứa chữ cái.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!Mau.matches("[\\p{L} ]+")) {
+                JOptionPane.showMessageDialog(this, "Màu chỉ được chứa chữ cái.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra Size hợp lệ
+            if (!Size.matches("[\\p{L}0-9]+")) {
+                JOptionPane.showMessageDialog(this, "Size chỉ được chứa chữ và/hoặc số, không có ký tự đặc biệt.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra định dạng số
+            float GiaNhap;
+            int SoLuong;
+            try {
+                GiaNhap = Float.parseFloat(GiaNhapStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Giá nhập phải là số hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                SoLuong = Integer.parseInt(SoLuongStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra định dạng ngày
+            if (!NgayNhap.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                JOptionPane.showMessageDialog(this, "Ngày nhập phải có định dạng yyyy-MM-dd (VD: 2025-05-21).", "Lỗi định dạng ngày", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Nếu mọi thứ đều hợp lệ -> cập nhật
+            NhapBean bean = new NhapBean(id, TenSanPham, NhaCungCap, GiaNhap, NgayNhap, Size, Mau, SoLuong);
+            NhapBal bal = new NhapBal();
+            bal.updateData(bean);
+            loadTable();
+            JOptionPane.showMessageDialog(this, "Cập nhật dữ liệu thành công!");
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+
         
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
@@ -503,12 +687,12 @@ public class NhapFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextFieldGiaBan;
-    private javax.swing.JTextField jTextFieldLoaiHangHoa;
-    private javax.swing.JTextField jTextFieldMaHangHoa;
-    private javax.swing.JTextField jTextFieldNgaySanXuat;
+    private javax.swing.JTextField jTextFieldGiaNhap;
+    private javax.swing.JTextField jTextFieldMau;
+    private javax.swing.JTextField jTextFieldNgayNhap;
+    private javax.swing.JTextField jTextFieldNhaCungCap;
+    private javax.swing.JTextField jTextFieldSize;
     private javax.swing.JTextField jTextFieldSoLuong;
-    private javax.swing.JTextField jTextFieldTenHangHoa;
-    private javax.swing.JTextField jTextFieldXuatXu;
+    private javax.swing.JTextField jTextFieldTenSanPham;
     // End of variables declaration//GEN-END:variables
 }

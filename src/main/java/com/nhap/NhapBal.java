@@ -6,6 +6,7 @@ package com.nhap;
 import java.sql.PreparedStatement;
 import com.database.DB;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -19,20 +20,21 @@ public class NhapBal {
     public List<NhapBean> loadData(){
         List<NhapBean> list = new ArrayList<NhapBean>();
         try {
-            String query = "select * from hanghoa";
+            String query = "select * from sanpham";
             PreparedStatement ps = DB.con.prepareStatement(query);
             
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                int MaHangHoa = rs.getInt("MaHangHoa");
-                String TenHangHoa = rs.getString("TenHangHoa");
-                String LoaiHangHoa = rs.getString("LoaiHangHoa");
-                String XuatXu = rs.getString("XuatXu");
-                String NgaySanXuat = rs.getString("NgaySanXuat");
-                float GiaBan = rs.getFloat("GiaBan");
+                int idsanpham = rs.getInt("idsanpham");
+                String TenSanPham = rs.getString("TenSanPham");
+                String NhaCungCap = rs.getString("NhaCungCap");
+                float GiaNhap = rs.getFloat("GiaNhap");
+                String NgayNhap = rs.getString("NgayNhap");
+                String Size = rs.getString("Size");
+                String Mau = rs.getString("Mau");
                 int SoLuong = rs.getInt("SoLuong");
                 
-                NhapBean bean = new NhapBean(MaHangHoa, TenHangHoa, LoaiHangHoa, XuatXu, NgaySanXuat, GiaBan, SoLuong);
+                NhapBean bean = new NhapBean(idsanpham,TenSanPham, NhaCungCap, GiaNhap, NgayNhap, Size, Mau, SoLuong);
                 list.add(bean);
                 
             }
@@ -51,14 +53,14 @@ public class NhapBal {
     
     public void insert(NhapBean nhapBean){
         try {
-            String query = "insert into hanghoa value (?,?,?,?,?,?,?)";
+            String query = "insert into sanpham values (null,?,?,?,?,?,?,?)";
             PreparedStatement ps = DB.con.prepareStatement(query);
-            ps.setInt(1, nhapBean.getMaHangHoa());
-            ps.setString(2, nhapBean.getTenHangHoa());
-            ps.setString(3, nhapBean.getLoaiHangHoa());
-            ps.setString(4, nhapBean.getXuatXu());
-            ps.setString(5, nhapBean.getNgaySanXuat());
-            ps.setFloat(6, nhapBean.getGiaBan());
+            ps.setString(1, nhapBean.getTenSanPham());
+            ps.setString(2, nhapBean.getNhaCungCap());
+            ps.setFloat(3, nhapBean.getGiaNhap());
+            ps.setString(4, nhapBean.getNgayNhap());
+            ps.setString(5, nhapBean.getSize());
+            ps.setString(6, nhapBean.getMau());
             ps.setInt(7, nhapBean.getSoLuong());
             
             
@@ -74,19 +76,20 @@ public class NhapBal {
     public NhapBean returnAllDataToTextFields(int id){
         NhapBean bean = null;
         try {
-            String query = "select * from hanghoa where MaHangHoa = "+id;
+            String query = "select * from sanpham where idsanpham = "+id;
             PreparedStatement ps = DB.con.prepareStatement(query);
             ResultSet rs = ps.executeQuery(query);
             while (rs.next()){
-                int MaHangHoa = rs.getInt("MaHangHoa");
-                String TenHangHoa = rs.getString("TenHangHoa");
-                String LoaiHangHoa = rs.getString("LoaiHangHoa");
-                String XuatXu = rs.getString("XuatXu");
-                String NgaySanXuat = rs.getString("NgaySanXuat");
-                float GiaBan = rs.getFloat("GiaBan");
+                int idsanpham = rs.getInt("idsanpham");
+                String TenSanPham = rs.getString("TenSanPham");
+                String NhaCungCap = rs.getString("NhaCungCap");
+                float GiaNhap = rs.getFloat("GiaNhap");
+                String NgayNhap = rs.getString("NgayNhap");
+                String Size = rs.getString("Size");
+                String Mau = rs.getString("Mau");
                 int SoLuong = rs.getInt("SoLuong");
                 
-                bean = new NhapBean(MaHangHoa, TenHangHoa, LoaiHangHoa, XuatXu, NgaySanXuat, GiaBan, SoLuong);
+                bean = new NhapBean(idsanpham,TenSanPham, NhaCungCap, GiaNhap, NgayNhap, Size, Mau, SoLuong);
                 
             }
         } catch (Exception e) {
@@ -99,15 +102,16 @@ public class NhapBal {
     //Update
     public void updateData(NhapBean nhapBean){
         try {
-            String query = "update hanghoa set TenHangHoa = ?, LoaiHangHoa = ?, XuatXu = ?, NgaySanXuat = ?,GiaBan = ?, SoLuong =? WHERE MaHangHoa = ?";
+            String query = "update sanpham set TenSanPham = ?, NhaCungCap = ?, GiaNhap = ?, NgayNhap = ?,Size = ?, Mau = ?, SoLuong = ? WHERE idsanpham = ?";
             PreparedStatement ps = DB.con.prepareStatement(query);
-            ps.setInt(7, nhapBean.getMaHangHoa());
-            ps.setString(1, nhapBean.getTenHangHoa());
-            ps.setString(2, nhapBean.getLoaiHangHoa());
-            ps.setString(3, nhapBean.getXuatXu());
-            ps.setString(4, nhapBean.getNgaySanXuat());
-            ps.setFloat(5, nhapBean.getGiaBan());
-            ps.setInt(6, nhapBean.getSoLuong());
+            ps.setInt(8, nhapBean.getIdsanpham());
+            ps.setString(1, nhapBean.getTenSanPham());
+            ps.setString(2, nhapBean.getNhaCungCap());
+            ps.setFloat(3, nhapBean.getGiaNhap());
+            ps.setString(4, nhapBean.getNgayNhap());
+            ps.setString(5, nhapBean.getSize());
+            ps.setString(6, nhapBean.getMau());
+            ps.setInt(7, nhapBean.getSoLuong());
             
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Đã cập nhật lại thành công");
@@ -116,11 +120,11 @@ public class NhapBal {
         }
     }
     
-    public void deleteData(NhapBean nhapBean){
+    public void deleteData(int id){
         try {
-            String query = "delete from hanghoa WHERE MaHangHoa = ?";
+            String query = "delete from sanpham WHERE idsanpham = ?";
             PreparedStatement ps = DB.con.prepareStatement(query);
-            ps.setInt(1, nhapBean.getMaHangHoa());
+            ps.setInt(1, id);
             
             
             ps.executeUpdate();
