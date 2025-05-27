@@ -17,47 +17,55 @@ import javax.swing.JOptionPane;
  * @author Jacker
  */
 public class Bal {
-    public boolean insertDataSignUp(Bean beanObj){
+    public boolean insertDataSignUp(Bean beanObj) {
         boolean b = false;
         try {
-        String fullName = beanObj.getFullName();
-        String email = beanObj.getEmail();
-        String password = beanObj.getPass();
+            String fullName = beanObj.getFullName();
+            String SDT = beanObj.getSDT();
+            String password = beanObj.getPass();
 
-        // Kiểm tra rỗng
-        if (fullName == null || fullName.trim().isEmpty() ||
-            email == null || email.trim().isEmpty() ||
-            password == null || password.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
-            return b;
+            // Kiểm tra rỗng
+            if (fullName == null || fullName.trim().isEmpty()
+                    || SDT == null || SDT.trim().isEmpty()
+                    || password == null || password.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+                return b;
+            }
+
+            // Kiểm tra SDT có phải là số và đủ 10 chữ số
+            if (!SDT.matches("\\d{10,}")) {
+                JOptionPane.showMessageDialog(null, "Số điện thoại phải là số và có ít nhất 10 chữ số");
+                return b;
+            }
+
+            // Kiểm tra xem SDT có tồn tại trong bảng nhanvien không
+            String checkNhanVienQuery = "SELECT * FROM nhanvien WHERE SDT = ?";
+            PreparedStatement checkPs = DB.con.prepareStatement(checkNhanVienQuery);
+            checkPs.setString(1, SDT);
+            ResultSet rs = checkPs.executeQuery();
+
+            if (!rs.next()) {
+                JOptionPane.showMessageDialog(null, "Số điện thoại không tồn tại trong hệ thống nhân viên");
+                return b;
+            }
+
+            // Nếu mọi thứ hợp lệ, tiến hành insert
+            String query = "INSERT INTO user VALUES (null, ?, ?, ?)";
+            PreparedStatement ps = DB.con.prepareStatement(query);
+            ps.setString(1, fullName);
+            ps.setString(2, SDT);
+            ps.setString(3, password);
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Đăng kí tài khoản thành công");
+            b = true;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Lỗi: " + e.getMessage());
         }
-
-        // Kiểm tra định dạng email
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-
-        if (!matcher.matches()) {
-            JOptionPane.showMessageDialog(null, "Email không đúng định dạng");
-            return b;
-        }
-
-        // Nếu mọi thứ hợp lệ, tiến hành insert
-        String query = "INSERT INTO user VALUES (null, ?, ?, ?)";
-        PreparedStatement ps = DB.con.prepareStatement(query);
-        ps.setString(1, fullName);
-        ps.setString(2, email);
-        ps.setString(3, password);
-        ps.executeUpdate();
-        
-        JOptionPane.showMessageDialog(null, "Đăng kí tài khoản thành công");
-        b= true;
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Lỗi: " + e.getMessage());
-    }
         return b;
     }
+
     
     public boolean checkLogin(String FullName, String pass){
         boolean b = false;

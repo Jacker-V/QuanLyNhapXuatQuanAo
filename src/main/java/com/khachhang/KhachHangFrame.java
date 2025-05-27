@@ -440,7 +440,7 @@ public class KhachHangFrame extends javax.swing.JFrame {
             KhachHangBal nhapObj = new KhachHangBal();
             nhapObj.insert(nhapBean);
             loadTable();
-            JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+//            JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi hệ thống", JOptionPane.ERROR_MESSAGE);

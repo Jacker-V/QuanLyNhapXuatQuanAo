@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.BaseFont;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Connection;
@@ -401,6 +402,7 @@ public class NhapFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Tên sản phẩm chỉ được chứa chữ cái.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            
             if (!NhaCungCap.matches("[\\p{L} ]+")) {
                 JOptionPane.showMessageDialog(this, "Nhà cung cấp chỉ được chứa chữ cái.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -419,6 +421,10 @@ public class NhapFrame extends javax.swing.JFrame {
             int SoLuong;
             try {
                 GiaNhap = Float.parseFloat(GiaNhapStr);
+                if (GiaNhap<0) {
+                JOptionPane.showMessageDialog(this, "Giá nhập cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Giá nhập phải là một số hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -426,6 +432,10 @@ public class NhapFrame extends javax.swing.JFrame {
 
             try {
                 SoLuong = Integer.parseInt(SoLuongStr);
+                if (SoLuong<0) {
+                JOptionPane.showMessageDialog(this, "Số lượng cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -465,65 +475,69 @@ public class NhapFrame extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         String maHangHoa = jTextField8.getText().trim();
-    if (maHangHoa.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập mã hàng hóa");
-        return;
-    }
-
-    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "root", "123456")) {
-        String query = "SELECT * FROM hanghoa WHERE MaHangHoa = ?";
-        PreparedStatement pstmt = conn.prepareStatement(query);
-        pstmt.setString(1, maHangHoa);
-        ResultSet rs = pstmt.executeQuery();
-
-        if (rs.next()) {
-            // Tạo tài liệu PDF
-            Document document = new Document();
-            String filePath = "phieu_" + maHangHoa + ".pdf";
-            PdfWriter.getInstance(document, new FileOutputStream(filePath));
-            document.open();
-
-            // Tiêu đề
-            Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
-            Paragraph title = new Paragraph("PHIẾU HÀNG HÓA\n\n", titleFont);
-            title.setAlignment(Element.ALIGN_CENTER);
-            document.add(title);
-
-            // Nội dung
-            Font contentFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
-            document.add(new Paragraph("Mã hàng hóa: " + rs.getInt("MaHangHoa"), contentFont));
-            document.add(new Paragraph("Tên hàng hóa: " + rs.getString("TenHangHoa"), contentFont));
-            document.add(new Paragraph("Loại hàng hóa: " + rs.getString("LoaiHangHoa"), contentFont));
-            document.add(new Paragraph("Xuất xứ: " + rs.getString("XuatXu"), contentFont));
-            document.add(new Paragraph("Ngày sản xuất: " + rs.getString("NgaySanXuat"), contentFont));
-            document.add(new Paragraph("Giá bán: " + rs.getFloat("GiaBan") + " VND", contentFont));
-            document.add(new Paragraph("Số lượng: " + rs.getInt("SoLuong"), contentFont));
-
-            document.close();
-            
-            // Tự động mở phiếu
-            try {
-                File pdfFile = new File(filePath);
-                if (pdfFile.exists() && Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(pdfFile);  // Mở file PDF bằng trình mặc định của hệ điều hành
-                } else {
-                    JOptionPane.showMessageDialog(this, "Không thể mở file PDF tự động.");
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Lỗi khi mở file PDF.");
-            }
-
-            JOptionPane.showMessageDialog(this, "Đã tạo phiếu PDF thành công tại: " + filePath);
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Không tìm thấy hàng hóa với mã: " + maHangHoa);
+        if (maHangHoa.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã hàng hóa");
+            return;
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Lỗi khi tạo file PDF.");
-    }
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "root", "123456")) {
+            String query = "SELECT * FROM sanpham WHERE idsanpham = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, maHangHoa);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                // Tạo tài liệu PDF
+                Document document = new Document();
+                String filePath = "phieu_" + maHangHoa + ".pdf";
+                PdfWriter.getInstance(document, new FileOutputStream(filePath));
+                document.open();
+
+                // Tiêu đề
+                BaseFont bf = BaseFont.createFont("src/fonts/times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                Font titleFont = new Font(bf, 16, Font.BOLD);
+                Font contentFont = new Font(bf, 12);
+//                Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+                Paragraph title = new Paragraph("PHIẾU NHẬP HÀNG\n\n", titleFont);
+                title.setAlignment(Element.ALIGN_CENTER);
+                document.add(title);
+
+                // Nội dung
+//                Font contentFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+                document.add(new Paragraph("Mã sản phẩm: " + rs.getInt("idsanpham"), contentFont));
+                document.add(new Paragraph("Tên sản phẩm: " + rs.getString("TenSanPham"), contentFont));
+                document.add(new Paragraph("Nhà Cung Cấp: " + rs.getString("NhaCungCap"), contentFont));
+                document.add(new Paragraph("Giá Nhập: " + rs.getString("GiaNhap") + "VND", contentFont));
+                document.add(new Paragraph("Ngày nhập: " + rs.getString("NgayNhap"), contentFont));
+                document.add(new Paragraph("Size: " + rs.getString("Size"), contentFont));
+                document.add(new Paragraph("Màu: " + rs.getString("Mau"), contentFont));
+                document.add(new Paragraph("Số lượng: " + rs.getInt("SoLuong") + " sản phẩm", contentFont));
+
+                document.close();
+
+                // Tự động mở phiếu
+                try {
+                    File pdfFile = new File(filePath);
+                    if (pdfFile.exists() && Desktop.isDesktopSupported()) {
+                        Desktop.getDesktop().open(pdfFile);  // Mở file PDF bằng trình mặc định của hệ điều hành
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Không thể mở file PDF tự động.");
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Lỗi khi mở file PDF.");
+                }
+
+                JOptionPane.showMessageDialog(this, "Đã tạo phiếu PDF thành công tại: " + filePath);
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy hàng hóa với mã: " + maHangHoa);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi tạo file PDF.");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     int id=0;
@@ -599,6 +613,10 @@ public class NhapFrame extends javax.swing.JFrame {
             int SoLuong;
             try {
                 GiaNhap = Float.parseFloat(GiaNhapStr);
+                if (GiaNhap<0) {
+                JOptionPane.showMessageDialog(this, "Giá nhập cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Giá nhập phải là số hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -606,6 +624,10 @@ public class NhapFrame extends javax.swing.JFrame {
 
             try {
                 SoLuong = Integer.parseInt(SoLuongStr);
+                if (SoLuong<0) {
+                JOptionPane.showMessageDialog(this, "Số lượng cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;

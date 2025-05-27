@@ -27,6 +27,7 @@ com\home\HomeFrameAdmin$2.class
 com\InPhieu\InPhieuFrame$1.class
 com\xuat\XuatFrame.class
 com\home\HomeFrame$4.class
+com\donhang\DonHangFrame$14.class
 com\donhang\DonHangFrame$4.class
 com\login\SignUpFrame$4.class
 com\nhanvien\NhanVienFrame$4.class
@@ -59,6 +60,7 @@ com\xuat\XuatBal.class
 com\xuat\XuatFrame$1.class
 com\nhap\NhapFrame$13.class
 com\login\SignUpFrame$6.class
+com\donhang\DonHangFrame$15.class
 com\nhanvien\NhanVienFrame$9.class
 com\nhap\NhapFrame$10.class
 com\nhap\NhapFrame$8.class

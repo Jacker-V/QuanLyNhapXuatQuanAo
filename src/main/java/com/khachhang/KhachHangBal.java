@@ -52,20 +52,31 @@ public class KhachHangBal {
     
     public void insert(KhachHangBean nhapBean){
         try {
-            String query = "insert into khachhang values (null,?,?,?)";
-            PreparedStatement ps = DB.con.prepareStatement(query);
-            ps.setString(1, nhapBean.getFullName());
-            ps.setString(2, nhapBean.getSDT());
-//            ps.setFloat(3, nhapBean.getMucLuong());
-//            ps.setString(4, nhapBean.getSDT());
-            ps.setString(3, nhapBean.getDiaChi());
-            
-            
-            
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Thanh cong");
+            // Bước 1: Kiểm tra số điện thoại đã tồn tại hay chưa
+            String checkQuery = "SELECT COUNT(*) FROM khachhang WHERE SDT = ?";
+            PreparedStatement checkPs = DB.con.prepareStatement(checkQuery);
+            checkPs.setString(1, nhapBean.getSDT());
+            ResultSet rs = checkPs.executeQuery();
+
+            rs.next();
+            int count = rs.getInt(1);
+
+            if (count > 0) {
+                // Nếu đã tồn tại
+                JOptionPane.showMessageDialog(null, "Số điện thoại khách hàng đã tồn tại, vui lòng cập nhật!");
+            } else {
+                // Nếu chưa tồn tại, tiến hành thêm mới
+                String query = "INSERT INTO khachhang VALUES (null, ?, ?, ?)";
+                PreparedStatement ps = DB.con.prepareStatement(query);
+                ps.setString(1, nhapBean.getFullName());
+                ps.setString(2, nhapBean.getSDT());
+                ps.setString(3, nhapBean.getDiaChi());
+
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Thêm khách hàng thành công!");
+            }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,""+e);
+            JOptionPane.showMessageDialog(null, "Lỗi: " + e.getMessage());
         }
         
     }

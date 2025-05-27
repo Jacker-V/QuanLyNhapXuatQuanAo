@@ -367,6 +367,10 @@ public class NhanVienFrame extends javax.swing.JFrame {
             float MucLuong;
             try {
                 MucLuong = Float.parseFloat(MucLuongStr);
+                if (MucLuong<0) {
+                JOptionPane.showMessageDialog(this, "Mức lương cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Mức lương phải là số hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -455,6 +459,10 @@ public class NhanVienFrame extends javax.swing.JFrame {
             float MucLuong;
             try {
                 MucLuong = Float.parseFloat(MucLuongStr);
+                if (MucLuong<0) {
+                JOptionPane.showMessageDialog(this, "Mức Lương cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Mức lương phải là số hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -477,7 +485,7 @@ public class NhanVienFrame extends javax.swing.JFrame {
             NhanVienBal nhapObj = new NhanVienBal();
             nhapObj.insert(nhapBean);
             loadTable();
-            JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+//            JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi hệ thống", JOptionPane.ERROR_MESSAGE);

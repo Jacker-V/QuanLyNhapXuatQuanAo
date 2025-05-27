@@ -10,12 +10,12 @@ package com.login;
  */
 public class Bean {
     private String fullName;
-    private String email;
+    private String SDT;
     private String pass;
 
-    public Bean(String fullName, String email, String pass) {
+    public Bean(String fullName, String SDT, String pass) {
         this.fullName = fullName;
-        this.email = email;
+        this.SDT = SDT;
         this.pass = pass;
     }
 
@@ -27,12 +27,12 @@ public class Bean {
         this.fullName = fullName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getSDT() {
+        return SDT;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSDT(String SDT) {
+        this.SDT = SDT;
     }
 
     public String getPass() {
@@ -42,6 +42,8 @@ public class Bean {
     public void setPass(String pass) {
         this.pass = pass;
     }
+
+    
     
     
 }

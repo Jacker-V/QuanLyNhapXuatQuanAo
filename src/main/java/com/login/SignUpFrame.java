@@ -41,7 +41,6 @@ public class SignUpFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(480, 510));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -99,7 +98,7 @@ public class SignUpFrame extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel4.setText("Email");
+        jLabel4.setText("Số điện thoại");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -187,10 +186,10 @@ public class SignUpFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Get data
         String fullName = jTextFieldTenDangNhap.getText();
-        String email = jTextFieldEmail.getText();
+        String SDT = jTextFieldEmail.getText();
         String pass = jTextFieldPassword.getText();
         
-        Bean beanObj = new Bean(fullName,email,pass);
+        Bean beanObj = new Bean(fullName,SDT,pass);
         
         
         

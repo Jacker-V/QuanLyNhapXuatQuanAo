@@ -5,6 +5,20 @@
 package com.donhang;
 
 import com.home.HomeFrame;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.awt.Font;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JOptionPane;
@@ -65,6 +79,9 @@ public class DonHangFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -98,6 +115,27 @@ public class DonHangFrame extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("QUẢN LÝ NHẬP XUẤT QUẦN ÁO");
 
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Nhập mã đơn hàng để in");
+
+        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField8ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(0, 153, 153));
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("In phiếu");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -106,13 +144,26 @@ public class DonHangFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(644, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addComponent(jButton3)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addGap(14, 14, 14))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, -1));
@@ -434,6 +485,10 @@ public class DonHangFrame extends javax.swing.JFrame {
             int SoLuong;
             try {
                 Gia = Float.parseFloat(GiaStr);
+                if (GiaNhap<0) {
+                JOptionPane.showMessageDialog(this, "Giá nhập cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Giá phải là số hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -441,6 +496,10 @@ public class DonHangFrame extends javax.swing.JFrame {
 
             try {
                 SoLuong = Integer.parseInt(SoLuongStr);
+                if (SoLuong<0) {
+                JOptionPane.showMessageDialog(this, "Số lượng cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -494,6 +553,78 @@ public class DonHangFrame extends javax.swing.JFrame {
         loadTable();
     }//GEN-LAST:event_jButtonXoaDonActionPerformed
 
+    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField8ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String maHangHoa = jTextField8.getText().trim();
+        if (maHangHoa.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã hàng hóa");
+            return;
+        }
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "root", "123456")) {
+            String query = "SELECT * FROM donhang WHERE iddonhang = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, maHangHoa);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                // Tạo tài liệu PDF
+                Document document = new Document();
+                String filePath = "phieu_" + maHangHoa + ".pdf";
+                PdfWriter.getInstance(document, new FileOutputStream(filePath));
+                document.open();
+
+                // Tiêu đề
+                BaseFont bf = BaseFont.createFont("src/fonts/times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(bf, 16, com.itextpdf.text.Font.BOLD);
+                com.itextpdf.text.Font contentFont = new com.itextpdf.text.Font(bf, 12);
+//                Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+                Paragraph title = new Paragraph("PHIẾU XUẤT HÀNG\n\n", titleFont);
+                title.setAlignment(Element.ALIGN_CENTER);
+                document.add(title);
+
+                // Nội dung
+                //                Font contentFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+                document.add(new Paragraph("Mã sản phẩm: " + rs.getInt("iddonhang"), contentFont));
+                document.add(new Paragraph("Tên sản phẩm: " + rs.getString("TenSanPham"), contentFont));
+                document.add(new Paragraph("Khách Hàng: " + rs.getString("KhachHang"), contentFont));
+                document.add(new Paragraph("Giá Xuat: " + rs.getString("Gia") + "VND", contentFont));
+                document.add(new Paragraph("Ngày nhập: " + rs.getString("NgayXuat"), contentFont));
+                document.add(new Paragraph("Size: " + rs.getString("Size"), contentFont));
+                document.add(new Paragraph("Màu: " + rs.getString("Mau"), contentFont));
+                document.add(new Paragraph("Số lượng: " + rs.getInt("SoLuong") + " sản phẩm", contentFont));
+
+                document.close();
+
+                // Tự động mở phiếu
+                try {
+                    File pdfFile = new File(filePath);
+                    if (pdfFile.exists() && Desktop.isDesktopSupported()) {
+                        Desktop.getDesktop().open(pdfFile);  // Mở file PDF bằng trình mặc định của hệ điều hành
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Không thể mở file PDF tự động.");
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Lỗi khi mở file PDF.");
+                }
+
+                JOptionPane.showMessageDialog(this, "Đã tạo phiếu PDF thành công tại: " + filePath);
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy hàng hóa với mã: " + maHangHoa);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi tạo file PDF.");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -530,6 +661,7 @@ public class DonHangFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonCapNhat;
     private javax.swing.JButton jButtonQuayLai;
     private javax.swing.JButton jButtonXoaDon;
@@ -541,12 +673,14 @@ public class DonHangFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextFieldGia;
     private javax.swing.JTextField jTextFieldKhachHang;
     private javax.swing.JTextField jTextFieldMau;

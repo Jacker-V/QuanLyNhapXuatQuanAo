@@ -51,20 +51,33 @@ public class NhanVienBal {
     
     public void insert(NhanVienBeans nhapBean){
         try {
-            String query = "insert into nhanvien values (null,?,?,?,?,?)";
-            PreparedStatement ps = DB.con.prepareStatement(query);
-            ps.setString(1, nhapBean.getFullName());
-            ps.setString(2, nhapBean.getChucVu());
-            ps.setFloat(3, nhapBean.getMucLuong());
-            ps.setString(4, nhapBean.getSDT());
-            ps.setString(5, nhapBean.getDiaChi());
-            
-            
-            
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Thanh cong");
+            // Bước 1: Kiểm tra số điện thoại đã tồn tại hay chưa
+            String checkQuery = "SELECT COUNT(*) FROM nhanvien WHERE SDT = ?";
+            PreparedStatement checkPs = DB.con.prepareStatement(checkQuery);
+            checkPs.setString(1, nhapBean.getSDT());
+            ResultSet rs = checkPs.executeQuery();
+
+            rs.next();
+            int count = rs.getInt(1);
+
+            if (count > 0) {
+                // Nếu đã tồn tại
+                JOptionPane.showMessageDialog(null, "Số điện thoại nhân viên đã tồn tại, vui lòng cập nhật!");
+            } else {
+                // Nếu chưa tồn tại, tiến hành thêm mới
+                String query = "INSERT INTO nhanvien VALUES (null, ?, ?, ?, ?, ?)";
+                PreparedStatement ps = DB.con.prepareStatement(query);
+                ps.setString(1, nhapBean.getFullName());
+                ps.setString(2, nhapBean.getChucVu());
+                ps.setFloat(3, nhapBean.getMucLuong());
+                ps.setString(4, nhapBean.getSDT());
+                ps.setString(5, nhapBean.getDiaChi());
+
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công!");
+            }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,""+e);
+            JOptionPane.showMessageDialog(null, "Lỗi: " + e.getMessage());
         }
         
     }

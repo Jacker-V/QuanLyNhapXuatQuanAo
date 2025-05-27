@@ -4,6 +4,7 @@
  */
 package com.xuat;
 
+import com.donhang.DonHangFrame;
 import com.home.HomeFrame;
 import com.home.HomeFrameAdmin;
 import com.nhap.NhapBal;
@@ -414,6 +415,10 @@ public class XuatFrame extends javax.swing.JFrame {
 
             try {
                 GiaNhap = Float.parseFloat(GiaNhapStr);
+                if (GiaNhap<0) {
+                JOptionPane.showMessageDialog(this, "Giá nhập cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Giá phải là một số hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -421,6 +426,10 @@ public class XuatFrame extends javax.swing.JFrame {
 
             try {
                 SoLuong = Integer.parseInt(SoLuongStr);
+                if (SoLuong<0) {
+                JOptionPane.showMessageDialog(this, "Số lượng cần lớn hơn 0", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên hợp lệ.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -438,6 +447,9 @@ public class XuatFrame extends javax.swing.JFrame {
             bal.updateData(bean);
             loadTable();
             JOptionPane.showMessageDialog(this, "Cập nhật dữ liệu thành công!");
+            DonHangFrame home = new DonHangFrame();
+            home.setVisible(true);
+            this.dispose();
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
